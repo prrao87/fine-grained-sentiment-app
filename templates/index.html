@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head>
+    <title>NLP explainer</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div>Explainer for NLP classifier</div>
+    <div class="container">
+        <form action="/result" method="post" >
+            <dl>
+                <dd>Enter your text:<input type=text name="entry"></dd><br>
+                <dd>Choose classifier:
+                    <select name="classifier">
+                        <option value="svm">Support Vector Machine</option>
+                        <option value="logistic">Logistic Regression</option>
+                        <option value="fasttext">FastText</option>
+                    </select>
+                </dd><br>
+                <dd><input type=submit value="Explain results!"></dd> 
+            </dl>
+        </form>
+    </div>
+</body>
+</html>
