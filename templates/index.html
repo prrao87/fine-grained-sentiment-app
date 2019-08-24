@@ -5,7 +5,7 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <div>Explainer for NLP classifier</div>
+    <h1>Explainer for NLP classifier</h1>
     <div class="container">
         <form action="/result" method="post" >
             <dl>
@@ -15,6 +15,8 @@
                         <option value="svm">Support Vector Machine</option>
                         <option value="logistic">Logistic Regression</option>
                         <option value="fasttext">FastText</option>
+                        <option value="vader">VADER</option>
+                        <option value="textblob">TextBlob</option>
                     </select>
                 </dd><br>
                 <dd><input type=submit value="Explain results!"></dd> 
