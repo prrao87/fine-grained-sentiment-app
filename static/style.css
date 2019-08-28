@@ -32,6 +32,8 @@ input[type=text], select, textarea{
     border-radius: 5px;
     background-color: #f2f2f2;
     padding: 20px;
+    width: 1000px;
+    margin: auto;
   }
   
   /* Floating column for labels: 25% width */
