@@ -9,7 +9,8 @@
     <div class="container">
         <form action="/result" method="post" >
             <dl>
-                <dd>Enter your text:<input type=text name="entry"></dd><br>
+                <dd>Enter your text:<input type=text name="entry" 
+                                           value='{% if entry %}{{ entry }}{% endif %}'></dd><br>
                 <dd>Number of samples for LIME explainer: (For really long input text, go up to 5000)
                     <input type=text name="n_samples" value="1000"></dd><br>
                 <dd>Choose classifier:
