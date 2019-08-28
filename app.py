@@ -6,12 +6,9 @@ app = Flask(__name__)
 SECRET_KEY = os.urandom(24)
 
 @app.route('/')
-def index():
-    return render_template('index.html')
-
-
 @app.route('/result', methods=['POST'])
-def explain():
+def index():
+    exp = ""
     if request.method == 'POST':
         text = tokenizer(request.form['entry'])
         method = request.form['classifier']
@@ -25,8 +22,8 @@ def explain():
                         num_samples=int(n_samples))
         exp = exp.as_html()
 
-        return render_template('result.html', exp=exp)
-    return render_template('index.html')
+        return render_template('index.html', exp=exp)
+    return render_template('index.html', exp=exp)
 
 
 if __name__ == '__main__':
