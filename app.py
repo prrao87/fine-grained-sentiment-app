@@ -15,13 +15,14 @@ def explain():
     if request.method == 'POST':
         text = tokenizer(request.form['entry'])
         method = request.form['classifier']
-        if not text:
-            raise ValueError("Please enter a sentence with at least a few words.")
+        n_samples = request.form['n_samples']
+        if any(not v for v in [text, n_samples]):
+            raise ValueError("Please do not leave text fields blank.")
 
         exp = explainer(method,
                         path_to_file=METHODS[method]['file'],
                         text=text,
-                        num_samples=1000)
+                        num_samples=int(n_samples))
         exp = exp.as_html()
 
         return render_template('result.html', exp=exp)
