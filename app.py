@@ -22,7 +22,7 @@ def index():
                         num_samples=int(n_samples))
         exp = exp.as_html()
 
-        return render_template('index.html', exp=exp)
+        return render_template('index.html', exp=exp, entry=text, n_samples=n_samples, classifier=method)
     return render_template('index.html', exp=exp)
 
 
