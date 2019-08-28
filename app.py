@@ -6,26 +6,24 @@ app = Flask(__name__)
 SECRET_KEY = os.urandom(24)
 
 @app.route('/')
-def index():
-    return render_template('index.html')
-
-
 @app.route('/result', methods=['POST'])
-def explain():
+def index():
+    exp = ""
     if request.method == 'POST':
         text = tokenizer(request.form['entry'])
         method = request.form['classifier']
-        if not text:
-            raise ValueError("Please enter a sentence with at least a few words.")
+        n_samples = request.form['n_samples']
+        if any(not v for v in [text, n_samples]):
+            raise ValueError("Please do not leave text fields blank.")
 
         exp = explainer(method,
                         path_to_file=METHODS[method]['file'],
                         text=text,
-                        num_samples=1000)
+                        num_samples=int(n_samples))
         exp = exp.as_html()
 
-        return render_template('result.html', exp=exp)
-    return render_template('index.html')
+        return render_template('index.html', exp=exp, entry=text, n_samples=n_samples, classifier=method)
+    return render_template('index.html', exp=exp)
 
 
 if __name__ == '__main__':

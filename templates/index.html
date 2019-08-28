@@ -5,11 +5,14 @@
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Explainer for NLP classifier</h1>
+    <h1 align="center">Explainer Dashboard for Fine-grained Sentiment</h1>
     <div class="container">
         <form action="/result" method="post" >
             <dl>
-                <dd>Enter your text:<input type=text name="entry"></dd><br>
+                <dd>Enter your text:<input type=text name="entry" 
+                                           value='{% if entry %}{{ entry }}{% endif %}'></dd><br>
+                <dd>Number of samples for LIME explainer: (For really long input text, go up to 5000)
+                    <input type=text name="n_samples" value='{% if n_samples %}{{ n_samples }}{% else %}1000{% endif %}'></dd><br>
                 <dd>Choose classifier:
                     <select name="classifier">
                         <option value="svm">Support Vector Machine</option>
@@ -23,5 +26,12 @@
             </dl>
         </form>
     </div>
+    <hr width="1000px" align="center">
+    {% if exp %}
+        <h3 align="center">LIME-explained results using {{ classifier }}</h3>
+        <div class="container">
+            {{ exp|safe }}
+        </div>
+    {% endif %}
 </body>
 </html>
