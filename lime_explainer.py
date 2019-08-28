@@ -217,7 +217,8 @@ class FastTextExplainer:
 
 def explainer(method: str,
               path_to_file: str,
-              text: str) -> LimeTextExplainer:
+              text: str,
+              num_samples: int) -> LimeTextExplainer:
     """Run LIME explainer on provided classifier"""
 
     model = explainer_class(method, path_to_file)
@@ -240,6 +241,7 @@ def explainer(method: str,
         classifier_fn=predictor,
         top_labels=1,
         num_features=20,
+        num_samples=num_samples,
     )
     return exp
 
@@ -249,10 +251,11 @@ def main(samples: List[str]) -> None:
     method_list = [method for method in METHODS.keys()]
     # Arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('--method', type=str, nargs='+', help="Enter one or more methods \
+    parser.add_argument('-m', '--method', type=str, nargs='+', help="Enter one or more methods \
                         (Choose from following: {})".format(", ".join(method_list)),
                         required=True)
-
+    parser.add_argument('-n', '--num_samples', type=int, help="Number of samples for explainer \
+                        instance", default=1000)
     args = parser.parse_args()
 
     for method in args.method:
@@ -264,7 +267,7 @@ def main(samples: List[str]) -> None:
         for i, text in enumerate(samples):
             text = tokenizer(text)  # Tokenize text using spaCy before explaining
             print("Generating LIME explanation for example {}: `{}`".format(i+1, text))
-            exp = explainer(method, path_to_file, text)
+            exp = explainer(method, path_to_file, text, args.num_samples)
             # Output to HTML
             output_filename = Path(__file__).parent / "{}-explanation-{}.html".format(i+1, method)
             exp.save_to_file(output_filename)

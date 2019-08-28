@@ -14,11 +14,16 @@ def index():
 def explain():
     if request.method == 'POST':
         text = tokenizer(request.form['entry'])
+        method = request.form['classifier']
         if not text:
             raise ValueError("Please enter a sentence with at least a few words.")
-        method = request.form['classifier']
-        exp = explainer(method, path_to_file=METHODS[method]['file'], text=text)
+
+        exp = explainer(method,
+                        path_to_file=METHODS[method]['file'],
+                        text=text,
+                        num_samples=1000)
         exp = exp.as_html()
+
         return render_template('result.html', exp=exp)
     return render_template('index.html')
 
