@@ -2,10 +2,17 @@
 <html>
 <head>
     <title>NLP explainer</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        $(function(){
+            var dynamicVar = '{% if classifier %}{{ classifier }}{% else%}base{% endif %}';
+            $("#classifier").val(dynamicVar).attr("selected", "selected");
+        });
+     </script>
 </head>
 <body>
-    <h1 align="center">Explainer Dashboard for Fine-grained Sentiment</h1>
+    <h1 align="center">LIME Explainer Dashboard for Fine-grained Sentiment</h1>
     <div class="container">
         <form action="/result" method="post" >
             <dl>
@@ -14,7 +21,8 @@
                 <dd>Number of samples for LIME explainer: (For really long input text, go up to 5000)
                     <input type=text name="n_samples" value='{% if n_samples %}{{ n_samples }}{% else %}1000{% endif %}'></dd><br>
                 <dd>Choose classifier:
-                    <select name="classifier">
+                    <select name="classifier" id="classifier" selected="selected">
+                        <option value="base">Please Select Classifier</option>
                         <option value="svm">Support Vector Machine</option>
                         <option value="logistic">Logistic Regression</option>
                         <option value="fasttext">FastText</option>

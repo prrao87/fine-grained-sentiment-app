@@ -16,11 +16,12 @@ def index():
         if any(not v for v in [text, n_samples]):
             raise ValueError("Please do not leave text fields blank.")
 
-        exp = explainer(method,
-                        path_to_file=METHODS[method]['file'],
-                        text=text,
-                        num_samples=int(n_samples))
-        exp = exp.as_html()
+        if method != "base":
+            exp = explainer(method,
+                            path_to_file=METHODS[method]['file'],
+                            text=text,
+                            num_samples=int(n_samples))
+            exp = exp.as_html()
 
         return render_template('index.html', exp=exp, entry=text, n_samples=n_samples, classifier=method)
     return render_template('index.html', exp=exp)
