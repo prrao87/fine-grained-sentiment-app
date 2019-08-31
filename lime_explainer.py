@@ -51,8 +51,8 @@ def explainer_class(method: str, filename: str) -> Any:
 
 class TextBlobExplainer:
     """Class to explain classification results of TextBlob.
-       Although Textblob outputs scores in [-1.0, 1.0], we `simulate` the 
-       probabilities that the model predicts using 5 equally-sized bins in this interval.
+       Although Textblob overall polarity scores are in the range [-1.0, 1.0], we `simulate`
+       the probabilities that the model predicts using 5 equally-sized bins in this interval.
        and using a normal distribution to artificially create class probabilities.
 
        For example:
@@ -86,7 +86,7 @@ class TextBlobExplainer:
 
 class VaderExplainer:
     """Class to explain classification results of Vader.
-       Although VADER outputs scores in [0, 1.0], we `simulate` the 
+       Although VADER compound scores are in the range [-1.0, 1.0], we `simulate` the 
        probabilities that the model predicts using 5 equally-sized bins in this interval.
        and using a normal distribution to artificially create class probabilities.
 
@@ -107,8 +107,10 @@ class VaderExplainer:
     def predict(self, texts: List[str]) -> np.array([float, ...]):
         probs = []
         for text in texts:
+            # First, offset the float score from the range [-1, 1] to a range [0, 1]
+            offset = (self.score(text) + 1) / 2.
             # Convert float score in [0, 1] to an integer value in the range [1, 5]
-            binned = np.digitize(5 * self.score(text), self.classes) + 1
+            binned = np.digitize(5 * offset, self.classes) + 1
             # Similate probabilities of each class based on a normal distribution
             simulated_probs = scipy.stats.norm.pdf(self.classes, binned, scale=0.5)
             probs.append(simulated_probs)
@@ -137,7 +139,12 @@ class LogisticExplainer:
             [
                 ('vect', CountVectorizer()),
                 ('tfidf', TfidfTransformer()),
-                ('clf', LogisticRegression(solver='liblinear', multi_class='auto')),
+                ('clf', LogisticRegression(
+                    solver='newton-cg',
+                    multi_class='multinomial',
+                    random_state=42,
+                    max_iter=100,
+                )),
             ]
         )
         # Train model
