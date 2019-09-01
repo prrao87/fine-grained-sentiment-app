@@ -18,7 +18,7 @@
             <dl>
                 <dd>Enter your text:<input type=text name="entry" 
                                            value='{% if entry %}{{ entry }}{% endif %}'></dd><br>
-                <dd>Number of samples for LIME explainer: (For really long input text, go up to 5000)
+                <dd>Number of samples to generate for LIME explainer: (For really long input text, go up to 5000)
                     <input type=text name="n_samples" value='{% if n_samples %}{{ n_samples }}{% else %}1000{% endif %}'></dd><br>
                 <dd>Choose classifier:
                     <select name="classifier" id="classifier" selected="selected">
@@ -34,7 +34,6 @@
             </dl>
         </form>
     </div>
-    <hr width="1000px" align="center">
     {% if exp %}
         <h3 align="center">LIME-explained results using {{ classifier }}</h3>
         <div class="container">
