@@ -97,7 +97,11 @@ class VaderExplainer:
        The PDF is used as a simulated probability of classes that we feed to the LIME explainer.
     """
     def __init__(self, model_file: str = None) -> None:
-        from nltk.sentiment.vader import SentimentIntensityAnalyzer
+        try:
+            from nltk.sentiment.vader import SentimentIntensityAnalyzer
+        except:
+            import nltk
+            nltk.download('vader_lexicon')
         self.vader = SentimentIntensityAnalyzer()
         self.classes = np.array([1, 2, 3, 4, 5])
 
