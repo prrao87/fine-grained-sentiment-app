@@ -28,7 +28,7 @@ METHODS = {
     },
     'fasttext': {
         'class': "FastTextExplainer",
-        'file': "models/fasttext/sst-5.ftz"
+        'file': "models/fasttext/sst5_hyperopt.ftz"
     },
 }
 
