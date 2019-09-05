@@ -23,7 +23,7 @@ For further development, simply activate the existing virtual environment.
 
 Run the file `app.py` and then enter a sentence, choose a type of classifier and click on the button `Explain results!`. We can then observe the features (i.e. words or tokens) that contributed to the classifier predicting a particular class label. 
 
-# Demo for the front-end
+## Demo for the front-end
 The front-end app takes in a text sample and outputs LIME explanations for the different methods. The app is is deployed using Heroku at this location: https://sst5-explainer.herokuapp.com/
 
 Play with your own text examples as shown below and see the fine-grained sentiment results explained!
