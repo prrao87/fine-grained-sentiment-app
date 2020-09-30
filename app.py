@@ -20,6 +20,7 @@ def index():
             exp = explainer(method,
                             path_to_file=METHODS[method]['file'],
                             text=text,
+                            lowercase=METHODS[method]['lowercase'],
                             num_samples=int(n_samples))
             exp = exp.as_html()
 

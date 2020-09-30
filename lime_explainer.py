@@ -12,23 +12,33 @@ import spacy
 METHODS = {
     'textblob': {
         'class': "TextBlobExplainer",
-        'file': None
+        'file': None,
+        'name': "TextBlob",
+        'lowercase': False,
     },
     'vader': {
         'class': "VaderExplainer",
-        'file': None
+        'file': None,
+        'name': "VADER",
+        'lowercase': False,
     },
     'logistic': {
         'class': "LogisticExplainer",
-        'file': "data/sst/sst_train.txt"
+        'file': "data/sst/sst_train.txt",
+        'name': "Logistic Regression",
+        'lowercase': False,
     },
     'svm': {
         'class': "SVMExplainer",
-        'file': "data/sst/sst_train.txt"
+        'file': "data/sst/sst_train.txt",
+        'name': "Support Vector Machine",
+        'lowercase': False,
     },
     'fasttext': {
         'class': "FastTextExplainer",
-        'file': "models/fasttext/sst5_hyperopt.ftz"
+        'file': "models/fasttext/sst5_hyperopt.ftz",
+        'name': "FastText",
+        'lowercase': True,
     },
 }
 
@@ -231,11 +241,15 @@ class FastTextExplainer:
 def explainer(method: str,
               path_to_file: str,
               text: str,
+              lowercase: bool,
               num_samples: int) -> LimeTextExplainer:
     """Run LIME explainer on provided classifier"""
 
     model = explainer_class(method, path_to_file)
     predictor = model.predict
+    # Lower case the input text if requested (for certain classifiers)
+    if lowercase:
+        text = text.lower()
 
     # Create a LimeTextExplainer
     explainer = LimeTextExplainer(
@@ -275,12 +289,13 @@ def main(samples: List[str]) -> None:
         if method not in METHODS.keys():
             parser.error("Please choose from the below existing methods! \n{}".format(", ".join(method_list)))
         path_to_file = METHODS[method]['file']
+        ENABLE_LOWER_CASE = METHODS[method]['lowercase']
         # Run explainer function
         print("Method: {}".format(method.upper()))
         for i, text in enumerate(samples):
             text = tokenizer(text)  # Tokenize text using spaCy before explaining
             print("Generating LIME explanation for example {}: `{}`".format(i+1, text))
-            exp = explainer(method, path_to_file, text, args.num_samples)
+            exp = explainer(method, path_to_file, text, ENABLE_LOWER_CASE, args.num_samples)
             # Output to HTML
             output_filename = Path(__file__).parent / "{}-explanation-{}.html".format(i+1, method)
             exp.save_to_file(output_filename)
