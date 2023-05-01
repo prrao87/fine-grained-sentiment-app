@@ -1,5 +1,5 @@
 tqdm==4.33.0
-flask==1.1.1
+flask==2.3.2
 pandas==0.25.0
 nltk==3.6.5
 textblob==0.15.3
