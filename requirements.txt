@@ -1,7 +1,7 @@
 tqdm==4.33.0
 flask==2.3.2
 pandas==0.25.0
-nltk==3.6.5
+nltk==3.6.6
 textblob==0.15.3
 cython==0.29.3
 fasttext==0.9.1
